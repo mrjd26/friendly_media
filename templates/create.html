@@ -1,0 +1,22 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+ <link type='text/css' rel='stylesheet' href='/static/login.css'/>  
+</head>
+
+
+ <body>
+  <div id='main_container'>
+   <h3>New User Registration</h3>
+   <form action='' method='POST'>{% csrf_token %}
+    {{form.as_p}}
+    <input type='submit' value='Submit'/>
+   </form>
+
+  </div>
+
+ </body>
+
+</head>

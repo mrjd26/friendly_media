@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<link style='text/css' rel='stylesheet' href='/static/dashboard.css'/>
+</head>
+
+<body>
+ <div id='login_pane'>
+  
+  <div id='fb_container' class='light'>
+   <form class='inline'action="/facebook_connect/" method="POST">{% csrf_token %}
+    <input type='image' id='fb_login' src='/static/fb_login.png'/>
+   </form><img class='inline' src="{{fb_png_source}}"/>
+  </div>
+
+  <div class='divider'></div>  
+
+  <div id='tw_container' class='dark'>
+   <form class='inline' action="/twitter_connect/" method="POST">{% csrf_token %}
+    <input type="image" id="twitter_sign_in" src="/static/twitter_sign_in.png"/>
+   </form><img class='inline' src="{{tw_png_source}}"/>
+  </div>
+
+  <div class='divider'></div>
+
+  <div id='in_container' class='light'>
+   <form class='inline' action='/in_connect/' method='POST'>{% csrf_token %}
+    <input type='image' id='linked_in' src='/static/linked_in.png'/>
+   </form><img class='inline' src="{{in_png_source}}"/>
+  </div>
+
+  <div id='g_container' class='dark'>
+    <form class='inline' action="/g_connect/" method="POST">{% csrf_token %}
+     <input type="image" id="google+" src="/static/google+.png"/>
+    </form><img class='inline' src="{{gplus_png_source}}"/>
+  </div>
+
+  <div class='divider'></div>
+
+ </div> <!--login pane-->
+ 
+ <div id='dashboard_pane'>
+  <div id=Logout_link><p><a href='/accounts/logout'>Logout</a></p></div>
+
+<!-- tabs -->
+  <div class='tab_wrap'>
+
+   <div class='tabs'>
+
+    <ul>
+      <li><a name='tab' id="home" href='/'>Home</a></li>
+      <li><a name='tab' id="upload" href='/upload/'>Upload</a></li>
+    </ul>
+
+   </div> <!-- end tabs -->
+
+   </div> <!-- end tab_wrap -->
+
+{{ datat }}<br>
+
+
+{% for post in home_feed|dictsortreversed:'created_time' %}
+ {% autoescape off %}
+<!-- Twitter -->
+  {% if post.platform == 'twitter' %}
+
+<!-- Retweet -->
+   {% if post.retweeted %}
+     <div id='post_container_twitter'>
+      <img class='inline'src='/static/RT.png'/><span class='retweet'>RETWEETED by {{post.user.name}}</span><br>
+<img src="{{post.retweeted_status.user.profile_image_url}}"/><span class='name'><a href="https://www.twitter.com/{{post.retweeted_status.user.screen_name}}">{{ post.retweeted_status.user.name }}</a></span><span class='screen_name'>@{{post.retweeted_status.user.screen_name}}</span><br>
+	<span class='tweetlow'>{{ post.message|urlize}}</span><br>
+    {% if post.link %}
+	<img src="{{ post.link}}"/></br>
+    {% endif %}
+    
+	<img src='/static/retweeted.png'/><span id='retweeted'class='screen_name'>Retweeted </span>{{post.retweet_count}}
+    
+    {% if post.favorited %}
+	<img src='/static/favorited.png'/><span id='favorited'class='screen_name'>Favorited </span>{{post.retweeted_status.favorite_count}}
+    {% endif %}
+      </div>
+  <!-- Tweet -->
+
+   {% else %}
+	<div id='post_container_twitter'>
+	<img class='inline'src="{{ post.profile_pic }}"/><span class='inline'><a href="https://twitter.com/{{post.screen_name}}">{{post.name}}</a></span><div class='inline'><span class='screen_name'>@{{post.user.screen_name}}</span><br>
+
+    
+	<span class='tweethigh'>{{ post.message|urlize }}</span><br></div>
+    {% if post.link %}
+	<img src="{{ post.link}}"/><br>
+    {% endif %}
+
+    {% if post.retweeted %}
+	<img src='/static/retweeted.png'/><span id='retweeted'class='screen_name'>Retweeted </span><span class='tweetlow'>{{post.retweet_count}}</span>
+    {% endif %}
+    {% if post.favorite_count != 0 %}
+	<img src='/static/favorited.png'/><span id='favorited' class='screen_name'>Favorited </span><span class='tweetlow'>{{post.favorite_count}}</span>
+    {% endif %}
+	{{ post.created_time }}
+	</div>
+   {% endif %}
+
+<!-- Facebook -->
+  {% elif post.platform == 'facebook' %}
+	<div id='post_container_facebook'>
+	<img class='inline'src="{{post.profile_pic}}"/><span class='inline'><a href='https://www.facebook.com/{{post.from.id}}'>{{post.name}}</a></span>
+	{% if post.story %}
+	<span id='actions'class='inline'>{{ post.story}}</span>
+	{% elif post.type != 'status' %}
+	<span id='actions'class='inline'>
+	{{post.actions.0.name}} on {{post.type}}</span>
+	{% else %}
+	{% endif %}
+	<br>
+    {% if post.caption %}
+        <span id='caption'>{{ post.caption|urlize}}</span>
+    {% endif %}
+    {% if post.picture %}
+	<img src="{{post.picture}}?type=normal"/><br>
+    {% endif %}
+    {% if post.link and post.type == 'photo' %}
+	<img src="{{post.link}}"/><br>
+    {% endif %}
+    {% if post.link and post.type == 'link' %}
+	<a href="{{post.link}}">{{post.description}}</a>
+    {% endif %}
+	{{ post.message|urlize}}<br>
+	{{ post.created_time}}
+	</div>
+   <!-- comments -->
+	<br>
+     {% for comment in post.comments.data %}
+      <div id='comments'>
+	<a href='https://www.facebook.com/{{comment.from.id}}'>{{ comment.from.name }}</a><br>
+      {{ comment.message|urlize }}<br>
+      <img class=inline src='/static/likes.png'/><span class='inline'>like count : {{ comment.like_count }}</span></div>
+     {% endfor %}
+
+  <!--linkedin-->
+
+  {% elif post.platform == 'linkedin'%}
+   <div id='post_container_linkedin'>
+   <a href='https://www.linkedin.com/company/{{post.updateContent.company.id}}'> {{ post.updateContent.company.name }}</a>
+    {{ post.updateContent.companyStatusUpdate.share.comment|urlize }}
+    {% if post.updateContent.companyStatusUpdate.share.content %}
+    {{ post.updateContent.companyStatusUpdate.share.content.title }}
+    {{ post.updateContent.companyStatusUpdate.share.content.description }}
+   <a href='{{post.updateContent.companyStatusUpdate.share.content.submittedUrl}}'><img src='{{ post.updateContent.companyStatusUpdate.share.content.submittedImageUrl }}'/></a>
+    {% endif %}
+   </div>
+
+  {% endif %}
+ {% endautoescape %}
+{% endfor %}
+
+there
+</div>
+
+</body>
+</html>

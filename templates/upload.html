@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<link style='text/css' rel='stylesheet' href='/static/dashboard.css'/>
+</head>
+
+<body>
+ <div id='login_pane'>
+  
+  <div id='fb_container' class='light'>
+   <form class='inline'action="/facebook_connect/" method="POST">{% csrf_token %}
+    <input type='image' id='fb_login' src='/static/fb_login.png'/>
+   </form><img class='inline' src="{{fb_png_source}}"/>
+  </div>
+
+  <div class='divider'></div>  
+
+  <div id='tw_container' class='dark'>
+   <form class='inline' action="/twitter_connect/" method="POST">{% csrf_token %}
+    <input type="image" id="twitter_sign_in" src="/static/twitter_sign_in.png"/>
+   </form><img class='inline' src="{{tw_png_source}}"/>
+  </div>
+
+  <div class='divider'></div>
+
+  <div id='in_container' class='light'>
+   <form class='inline' action='/in_connect/' method='POST'>{% csrf_token %}
+    <input type='image' id='linked_in' src='/static/linked_in.png'/>
+   </form><img class='inline' src="{{in_png_source}}"/>
+  </div>
+
+  <div id='g_container' class='dark'>
+    <form class='inline' action="/g_connect/" method="POST">{% csrf_token %}
+     <input type="image" id="google+" src="/static/google+.png"/>
+    </form><img class='inline' src="{{gplus_png_source}}"/>
+  </div>
+
+  <div class='divider'></div>
+
+ </div> <!--end login pane-->
+ 
+ <div id='upload_pane'>
+  <div id=Logout_link><p><a href='/accounts/logout'>Logout</a></p></div>
+
+  <div class='tab_wrap'>
+
+   <div class='tabs'>
+
+    <ul>
+      <li><a name='tab' id="home" href='/'>Home</a></li>
+      <li><a name='tab' id="upload" href='/upload/'>Upload</a></li>
+    </ul>
+
+   </div> <!-- end tabs -->
+
+   </div> <!-- end wrapper -->
+
+</div> <!-- end upload pane -->
+
+</body>
+</html>

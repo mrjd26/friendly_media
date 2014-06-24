@@ -1,0 +1,30 @@
+#main_container {
+position:absolute;
+height:300px;
+width:500px;
+background-color:#CCFFCC;
+top:25%;
+left:25%;
+border:1px solid black;
+border-radius:2px;
+}
+
+form{
+margin-top:25px;
+}
+
+body{
+background-color:#66757f;
+}
+
+#register {
+margin-left:350px;
+}
+
+#forgot {
+margin-left:350px;
+}
+
+#message{
+color:red;
+}

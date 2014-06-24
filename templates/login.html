@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+ <link type='text/css' rel='stylesheet' href='/static/login.css'/>  
+
+
+
+<!-- G+ Verification -->
+
+<a href="https://plus.google.com/109655484217805791883" rel="publisher">Google+</a>
+
+<!-- end Verification -->
+
+<title>Social Media Management Platform</title>
+
+<meta name='keywords' content='LInkedin, G+, Facebook, Pinterest, Twitter, Google, Yelp, Tumblr'>
+<meta name='description' content='Easily publish and view your various social media business pages and sites'> 
+
+</head>
+
+ <body>
+  <div id='main_container'>
+   <h3>Account Login</h3>
+   <form action='' method='POST'>{% csrf_token %}
+    {{form.as_p}}
+    <input type='submit' value='Submit'/>
+   </form>
+   <span id='register'><a href='/accounts/create/'>Register</a></span>
+   <span id='forgot'><a href='/forgot/'>Forgot Password?</a></span>
+   <br>
+   <span id='message'>{{message}}</span>
+
+  </div>
+
+ </body>
+
+</head>
