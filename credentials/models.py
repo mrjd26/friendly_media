@@ -239,3 +239,15 @@ class GooglePlusCredentials(models.Model):
 		self.token_type=response['token_type']
 		self.django_id = django_id
 		self.save()
+
+
+
+
+
+# upload form model
+
+class upload(models.Model):
+	image=models.ImageField(upload_to='static')
+	text=models.CharField(max_length=255)
+	link=models.CharField(max_length=255)
+	title=models.CharField(max_length=255)

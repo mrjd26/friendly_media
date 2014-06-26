@@ -1,4 +1,6 @@
 from django.shortcuts import render_to_response
+from forms import uploadform
+from credentials.models import upload
 
 
 
@@ -24,6 +26,17 @@ def upload(request):
 		gplus_png_source = '/static/yield.png'
 
 
+	if request.method=='POST':
+	
+		form = uploadform(request.POST,request.FILES)
 
+		if form.is_valid():
+			new_post = form.save(commit=False)
+			new_post.save()
+	
+			return HttpResponseRedirect('/')
 
-	return render_to_response('upload.html',{'tw_png_source':tw_png_source,'fb_png_source':fb_png_source,'in_png_source':in_png_source,'gplus_png_source':gplus_png_source})
+	else:
+		form = uploadform()
+
+	return render_to_response('upload.html',{'form':form,'tw_png_source':tw_png_source,'fb_png_source':fb_png_source,'in_png_source':in_png_source,'gplus_png_source':gplus_png_source})
