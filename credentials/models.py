@@ -127,6 +127,7 @@ class FacebookCredentials(models.Model):
 
 
 class TwitterCredentials(models.Model):
+	
 	TWITTER_API_KEY = TWITTER_API_KEY
 	TWITTER_API_SECRET = TWITTER_API_SECRET
 	TWITTER_REDIRECT_URL = BASE_URL+'/accounts/twitter_callback'
@@ -242,12 +243,11 @@ class GooglePlusCredentials(models.Model):
 
 
 
-
-
 # upload form model
 
 class upload(models.Model):
-	image=models.ImageField(upload_to='static')
-	text=models.CharField(max_length=255)
-	link=models.CharField(max_length=255)
-	title=models.CharField(max_length=255)
+	image=models.ImageField(upload_to='static',blank=True,null=True)
+	text=models.CharField(max_length=255,blank=True,null=True)
+	link=models.CharField(max_length=255,blank=True,null=True)
+	title=models.CharField(max_length=255,blank=True,null=True)
+	

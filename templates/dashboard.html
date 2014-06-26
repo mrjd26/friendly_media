@@ -42,7 +42,8 @@
  
  <div id='dashboard_pane'>
   <div id=Logout_link><p><a href='/accounts/logout'>Logout</a></p></div>
-
+{{data1}}
+{{data2}}
 <!-- tabs -->
   <div class='tab_wrap'>
 
@@ -85,7 +86,7 @@
 
    {% else %}
 	<div id='post_container_twitter'>
-	<img class='inline'src="{{ post.profile_pic }}"/><span class='inline'><a href="https://twitter.com/{{post.screen_name}}">{{post.name}}</a></span><div class='inline'><span class='screen_name'>@{{post.user.screen_name}}</span><br>
+	<img class='inline'src="{{ post.profile_pic }}"/><span class='inline'><a href="https://twitter.com/{{post.user.screen_name}}">{{post.name}}</a></span><div class='inline'><span class='screen_name'>@{{post.user.screen_name}}</span><br>
 
     
 	<span class='tweethigh'>{{ post.message|urlize }}</span><br></div>

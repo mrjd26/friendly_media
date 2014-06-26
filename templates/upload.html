@@ -59,6 +59,11 @@
    <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
+   <input type="checkbox" name="platform" value="twitter"{{tw_state}}>Twitter
+   <input type="checkbox" name="platform" value="facebook"{{fb_state}}>Facebook
+   <input type="checkbox" name="platform" value="linkedin"{{in_state}}>Linkedin
+   <input type="checkbox" name="platform" value="gplus"{{g_state}}>Google+
+
    <input type="submit" value="Submit"/>
    </form>
 

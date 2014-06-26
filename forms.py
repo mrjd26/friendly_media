@@ -14,6 +14,7 @@ class create_form(forms.Form):
 
 
 class uploadform(forms.ModelForm):
+
 	class Meta:
 		model = upload
 		field = ('image','text','link','title')
