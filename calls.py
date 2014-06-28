@@ -1,5 +1,6 @@
 from requests_oauthlib import OAuth1
 import requests
+import json
 
 graph_url = 'https://graph.facebook.com'
 twitter_api_url = 'https://api.twitter.com/1.1'
@@ -19,7 +20,11 @@ class Facebook:
 		fb_feed = r.json()
 
 		return fb_feed
-
+	def api_call_post(self,endpoint,params):
+		page_feed_endpoint = graph_url + endpoint
+		r = requests.post(page_feed_endpoint,params=params)
+		
+		return r.content,r.reason
 
 class Twitter:
 
@@ -61,3 +66,8 @@ class Linkedin:
 		except:
 			in_read = []
 		return in_read
+
+	def api_call_post(self,endpoint,params,data,headers):
+		call_endpoint = linkedin_url + endpoint
+		r = requests.request('POST',call_endpoint,data=json.dumps(data),params=params,headers=headers)
+		return r.content,r.url,r.headers	

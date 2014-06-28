@@ -24,5 +24,6 @@ urlpatterns = patterns('',
     url(r'^accounts/g_callback/$','views_g.g_callback'),
 
     url(r'^upload/$','views_upload.upload'),
+    url(r'^upload_process/$','views_upload.upload_process'),
 	
 )

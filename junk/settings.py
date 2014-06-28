@@ -105,3 +105,5 @@ TEMPLATE_DIRS = (
 	'templates',
 )
 
+# Django in memory upload maxed out at 6MB,No app engine storage ;(
+FILE_UPLOAD_MAX_MEMORY_SIZE= 6000000

@@ -42,6 +42,7 @@ class FacebookCredentials(models.Model):
 	page_id = models.CharField(max_length=256, blank=True, null=True)
 	user_access_token = models.CharField(max_length=512, blank=True, null=True)
 	token_expires = models.CharField(max_length=256, blank=True, null=True)
+	page_access_token = models.CharField(max_length=256,blank=True,null=True)
 
 
 	def get_user_access_token_from_code(self,code):
@@ -115,6 +116,9 @@ class FacebookCredentials(models.Model):
 		r = requests.get(self.graph_accounts_call,params=params)
 		data = json.loads(r.content)
 		page_id = data['data'][0]['id']
+
+		page_access_token = data['data'][0]['access_token']
+		self.page_access_token = page_access_token
 	
 		self.page_id = page_id		
 
