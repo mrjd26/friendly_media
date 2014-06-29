@@ -123,7 +123,7 @@
         <span id='caption'>{{ post.caption|urlize}}</span>
     {% endif %}
     {% if post.picture %}
-	<img src="{{post.picture}}?type=normal"/><br>
+	<img src="{{post.picture}}"/><br>
     {% endif %}
     {% if post.link and post.type == 'photo' %}
 	<img src="{{post.link}}"/><br>

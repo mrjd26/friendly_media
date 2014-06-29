@@ -24,5 +24,8 @@ libraries:
 - name: django
   version: latest
 
+- name: PIL
+  version: latest
+
 builtins:
 - django_wsgi: on

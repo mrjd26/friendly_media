@@ -25,5 +25,6 @@ urlpatterns = patterns('',
 
     url(r'^upload/$','views_upload.upload'),
     url(r'^upload_process/$','views_upload.upload_process'),
-	
+	#ouhouh
+    url(r'^progressbarupload/',include('progressbarupload.urls')),	
 )

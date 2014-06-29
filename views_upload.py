@@ -62,7 +62,7 @@ def upload(request):
 
 		if form.is_valid():
 			new_post = form.save(commit=False)
-			new_post.save()
+			#new_post.save()
 	
 			return HttpResponseRedirect('/upload_process/')
 

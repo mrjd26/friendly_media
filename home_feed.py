@@ -44,9 +44,15 @@ def order_feed(all_feeds):
 
 			post['name']=post['from']['name']
 			post['platform']='facebook'
-
 			
 			post['created_time'] = parser.parse(post['created_time'])
+
+			if 'picture' in post:
+				ndx_of_s = post['picture'].rfind('s')
+				if ndx_of_s > 80:
+					new_link = post['picture'][:ndx_of_s]+'o'+post['picture'][ndx_of_s+1:]
+				post['picture']=new_link
+
 
 		#linkedin-time
 		if 'timestamp' in post:
