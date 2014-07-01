@@ -49,8 +49,11 @@ def order_feed(all_feeds):
 
 			if 'picture' in post:
 				ndx_of_s = post['picture'].rfind('s')
-				if ndx_of_s > 80:
-					new_link = post['picture'][:ndx_of_s]+'o'+post['picture'][ndx_of_s+1:]
+				ndx_of_n = post['picture'].rfind('n')
+				if ndx_of_s > 50:
+					new_link = post['picture'][:ndx_of_s]+'n'+post['picture'][ndx_of_s+1:]
+				else:
+					new_link=post['picture']
 				post['picture']=new_link
 
 

@@ -1,8 +1,8 @@
 from django.shortcuts import render,render_to_response
 from forms import uploadform
-from credentials.models import upload,FacebookCredentials,LinkedinCredentials
+from credentials.models import upload,FacebookCredentials,LinkedinCredentials,TwitterCredentials
 from django.http import HttpResponseRedirect
-from calls import Facebook,Linkedin
+from calls import Facebook,Linkedin,Twitter
 
 #google cloud services imports
 from google.appengine.api import app_identity
@@ -15,6 +15,14 @@ import os
 import json
 from urllib import quote_plus
 
+
+import base64
+
+# try urlfetch
+from google.appengine.api import urlfetch
+from twython import Twython
+from PIL import Image
+from StringIO import StringIO
 
 output = []
 bucket_name = os.environ.get('BUCKET_NAME',app_identity.get_default_gcs_bucket_name())
@@ -179,4 +187,52 @@ def upload_process(request):
 
 			data1,data2,data3=L.api_call_post(endpoint,params,data,headers)
 
-	return render_to_response('dashboard.html',{'data1':data1,'data2':data2,'data3':data3})
+		if 'twitter' in platform:
+			o = TwitterCredentials.objects.get(django_id=user)
+			oauth_token = o.oauth_token
+			oauth_token_secret = o.oauth_token_secret
+			TWITTER_API_KEY = o.TWITTER_API_KEY
+			TWITTER_API_SECRET=o.TWITTER_API_SECRET
+			
+
+
+			if 'image' in request.FILES and request.FILES['image']:
+				
+				file_object = request.FILES['image']
+				file_object.open()
+				img=file_object.read()
+					
+				twitter=Twython(TWITTER_API_KEY,TWITTER_API_SECRET,oauth_token,oauth_token_secret)
+							
+				twitter.update_status_with_media(media=StringIO(img),status=text)
+	
+				#binary_data = gcs.open('/'+bucket_name + '/' + name)
+
+
+				#T = Twitter(user,TWITTER_API_KEY,TWITTER_API_SECRET,oauth_token,oauth_token_secret)
+				#endpoint = '/statuses/update_with_media.format'
+				
+				
+				#params = {'status':text,
+				#	'media[]':binary_data}
+			
+				#data1,data2,data3=T.api_call_post(endpoint,params)
+				#file_object.close()
+
+				#result = urlfetch.fetch(url='https://api.twitter.com/1.1/statuses/update_with_media.json',
+				#payload=params,
+				#method=urlfetch.POST,
+				#headers={'Content-Type':'application/octet-stream'})
+
+				
+
+
+			else:
+				T = Twitter(user,TWITTER_API_KEY,TWITTER_API_SECRET,oauth_token,oauth_token_secret)
+				endpoint = '/statuses/update.json'
+				params = {'status':text}
+				data1,data2,data3=T.api_call_post(endpoint,params)
+				
+
+
+	return render_to_response('dashboard.html',{'data1':data1,'data4':data2,'data3':data3})

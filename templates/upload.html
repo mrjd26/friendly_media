@@ -1,4 +1,4 @@
-{% load progress_bar %}
+
 
 <!DOCTYPE html>
 
@@ -6,9 +6,6 @@
 <head>
 <link style='text/css' rel='stylesheet' href='/static/dashboard.css'/>
 
-<!--ouhouh-->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-{% progress_bar_media %}
 </head>
 
 <body>
@@ -70,8 +67,6 @@
    <input type="checkbox" name="platform" value="facebook"{{fb_state}}>Facebook
    <input type="checkbox" name="platform" value="linkedin"{{in_state}}>Linkedin
    <input type="checkbox" name="platform" value="gplus"{{g_state}}>Google+
- </br>
-   {% progress_bar %}
  </br>
    <input type="submit" value="Submit"/>
    </form>

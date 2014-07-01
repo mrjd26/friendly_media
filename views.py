@@ -69,6 +69,13 @@ def dashboard(request):
 			'format':'json'}
 		in_read = I.api_call(endpoint,params)
 
+		#company logo-url call
+		endpoint = '/companies/'+page_id+':(id,name,description,square-logo-url,logo-url)'
+		params={'oauth2_access_token':access_token,
+			'format':'json'}
+		company = I.api_call_company(endpoint,params)
+		company_logo_url = company['logoUrl']
+
 		#set session for linkedin state
 
 		request.session['linkedin_state']=True	
@@ -149,5 +156,5 @@ def dashboard(request):
 
 	home_feed = order_feed(all_feeds)
 
-	return render(request,'dashboard.html',{'fb_png_source':fb_png_source,'tw_png_source':tw_png_source,'in_png_source':in_png_source,'gplus_png_source':gplus_png_source,'home_feed':home_feed,'data1':fb_feed})
+	return render(request,'dashboard.html',{'fb_png_source':fb_png_source,'tw_png_source':tw_png_source,'in_png_source':in_png_source,'gplus_png_source':gplus_png_source,'home_feed':home_feed,'data1':company_logo_url,'company_logo_url':company_logo_url})
 

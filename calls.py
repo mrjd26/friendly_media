@@ -48,6 +48,20 @@ class Twitter:
 		
 		return tw_feed
 
+	def api_call_post(self,endpoint,params):
+		call_endpoint = twitter_api_url + endpoint
+
+		oauth = OAuth1(self.TWITTER_API_KEY,
+		client_secret=self.TWITTER_API_SECRET,
+		resource_owner_key=self.oauth_token,
+		resource_owner_secret=self.oauth_token_secret)
+
+		headers = {'Content-Type':'application/octet-stream'}		
+
+		r = requests.request('POST',call_endpoint,auth=oauth,headers=headers,params=params)
+
+		return r.content,r.reason,r.url
+
 class Linkedin:
 	
 	def __init__(self,django_id):
@@ -70,4 +84,10 @@ class Linkedin:
 	def api_call_post(self,endpoint,params,data,headers):
 		call_endpoint = linkedin_url + endpoint
 		r = requests.request('POST',call_endpoint,data=json.dumps(data),params=params,headers=headers)
-		return r.content,r.url,r.headers	
+		return r.content,r.url,r.headers
+
+	def api_call_company(self,endpoint,params):
+		call_endpoint = linkedin_url + endpoint
+		r = requests.get(call_endpoint,params=params)
+		company = r.json()
+		return company	

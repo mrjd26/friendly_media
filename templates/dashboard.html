@@ -42,9 +42,9 @@
  
  <div id='dashboard_pane'>
   <div id=Logout_link><p><a href='/accounts/logout'>Logout</a></p></div>
-{{data1}}
-{{data2}}
-{{data3}}
+data1:{{data1}}</br>
+data2:<img src="{{data2}}"/></br>
+data3:{{data3}}</br>
 {{data4}}
 
 <!-- tabs -->
@@ -125,9 +125,12 @@
     {% if post.picture %}
 	<img src="{{post.picture}}"/><br>
     {% endif %}
+
+<!-- not sure what this is 
     {% if post.link and post.type == 'photo' %}
 	<img src="{{post.link}}"/><br>
     {% endif %}
+-->
     {% if post.link and post.type == 'link' %}
 	<a href="{{post.link}}">{{post.description}}</a>
     {% endif %}
@@ -147,7 +150,7 @@
 
   {% elif post.platform == 'linkedin'%}
    <div id='post_container_linkedin'>
-   <a href='https://www.linkedin.com/company/{{post.updateContent.company.id}}'> {{ post.updateContent.company.name }}</a>
+   <img class='inline' src="{{company_logo_url}}"/><a href='https://www.linkedin.com/company/{{post.updateContent.company.id}}'> {{ post.updateContent.company.name }}</a>
     {{ post.updateContent.companyStatusUpdate.share.comment|urlize }}
     {% if post.updateContent.companyStatusUpdate.share.content %}
     {{ post.updateContent.companyStatusUpdate.share.content.title }}

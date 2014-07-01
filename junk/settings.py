@@ -35,8 +35,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'credentials',
-#trying progress bar upload from ouhouh
-    'progressbarupload',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -110,10 +108,4 @@ TEMPLATE_DIRS = (
 # Django in memory upload maxed out at 6MB,No app engine storage ;(
 FILE_UPLOAD_MAX_MEMORY_SIZE= 10000000
 
-#trying progress bar upload from ouhouh
-FILE_UPLOAD_HANDLERS = (
-    "progressbarupload.uploadhandler.ProgressBarUploadHandler",
-    "django.core.files.uploadhandler.MemoryFileUploadHandler",
-    "django.core.files.uploadhandler.TemporaryFileUploadHandler",
-)
-PROGRESSBARUPLOAD_INCLUDE_JQUERY=False
+
