@@ -4,8 +4,11 @@
 
 <html>
 <head>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 <link style='text/css' rel='stylesheet' href='/static/dashboard.css'/>
-
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
+<script type='text/javascript' src='/static/js/upload.js'></script>
 </head>
 
 <body>
@@ -44,7 +47,7 @@
  </div> <!--end login pane-->
  
  <div id='upload_pane'>
-  <div id=Logout_link><p><a href='/accounts/logout'>Logout</a></p></div>
+  <div id="Logout_link"><p><a href='/accounts/logout'>Logout</a></p></div>
 
   <div class='tab_wrap'>
 
@@ -62,8 +65,8 @@
    <form action="/upload_process/" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    
-   <input type="checkbox" name="platform" value="twitter"{{tw_state}}>Twitter
+    <div id="char_count">count</div>
+   <input id="twitter_checkbox" type="checkbox" name="platform" value="twitter"{{tw_state}}>Twitter
    <input type="checkbox" name="platform" value="facebook"{{fb_state}}>Facebook
    <input type="checkbox" name="platform" value="linkedin"{{in_state}}>Linkedin
    <input type="checkbox" name="platform" value="gplus"{{g_state}}>Google+

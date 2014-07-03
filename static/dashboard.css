@@ -165,4 +165,16 @@ font-size:16px;
 line-height:22px;
 }
 
+#char_count{
+visibility:hidden;
+background-color:#E1E8ED;
+margin-left:40%;
+width:75px;
+}
 
+#id_text{
+color:black;
+}
+#id_link{
+color:black;
+}
