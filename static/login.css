@@ -1,28 +1,36 @@
 #main_container {
-position:absolute;
-height:300px;
-width:500px;
-background-color:#CCFFCC;
-top:25%;
-left:25%;
+position:fixed;
+margin-left:auto;
+margin-right:auto;
 border:1px solid black;
 border-radius:2px;
+box-shadow:10px 10px 5px #888888;
 }
 
-form{
-margin-top:25px;
+#star{
+position:absolute;
 }
 
 body{
-background-color:#66757f;
+
+background-repeat:no-repeat;
+background-size:cover;
+}
+
+h3{
+text-align:center;
+}
+
+input{
+text-align:center;
 }
 
 #register {
-margin-left:350px;
+text-align:right;
 }
 
 #forgot {
-margin-left:350px;
+text-align:right;
 }
 
 #message{

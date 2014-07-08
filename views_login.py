@@ -4,6 +4,11 @@ from django.shortcuts import redirect,render,render_to_response
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 
+
+#imports for '/thanks/' view on successful registration
+
+from google.appengine.api import mail
+
 def login_screen(request):
 
     message=''
@@ -39,25 +44,60 @@ def create(request):
 		form = create_form(request.POST)
 
 		if form.is_valid():
+
+			
 			password=request.POST['password']
 			username=request.POST['username']
-			email=request.POST['email']
-			User.objects.create_user(username,email,password)
-	
-			request.session['email'] = email
-			message = 'New user '+username+' @ '+email +' created!'
+			user_address=request.POST['email']
 
-			return redirect(login_screen)
+			#additional verification for valid email address from google
+	
+			if not mail.is_email_valid(user_address):
+				form=create_form()
+		
+				return render(request,'create.htl',{'form':form})
+			
+	
+			else:
+				sender_address="Friendly-Media.com Support <friendlymedia.incorporation@gmail.com>"
+
+				subject="Confirm your registration"
+
+				body = """
+Thank you for creating an account! Please confirm your email address by
+clicking on the link below:
+
+%s
+""" %('https://myproject0922.appspot.com/confirmed?email='+user_address+'&username='+username)				
+
+				mail.send_mail(sender_address,user_address,subject,body)
+				#user address == email (for django auth model)
+				email=user_address
+				User.objects.create_user(username,email,password)
+				q = User.objects.filter(username=username,email=email)
+				a = q[0]
+				a.is_active=False
+				a.save()			
+
+				return render_to_response('thanks.html',{'user_address':user_address,'is_active':a.is_active})
 
 	else:
 		form = create_form()
 
 	return render(request,'create.html',{'form':form})
 
-def thanks(request):
+def confirmed(request):
 
-	email = request.session['email']
-	return render_to_response('thanks.html',{'email':email})
+	user_address=request.GET['email']
+	username=request.GET['username']
+
+	q = User.objects.filter(email=user_address,username=username)	
+	
+	a = q[0]
+	a.is_active=True
+	a.save()
+
+	return render_to_response('confirmed.html',{'is_active':a.is_active})
 
 def logout_view(request):
 	logout(request)

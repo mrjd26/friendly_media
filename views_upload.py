@@ -13,15 +13,8 @@ from google.appengine.api.images import get_serving_url
 
 import os
 import json
-from urllib import quote_plus
 
-
-import base64
-
-# try urlfetch
-from google.appengine.api import urlfetch
 from twython import Twython
-from PIL import Image
 from StringIO import StringIO
 
 output = []
@@ -87,6 +80,7 @@ def upload_process(request):
 		text = request.POST['text']
 	if 'link' in request.POST:
 		link = request.POST['link']
+	
 	if 'title' in request.POST:
 		title= request.POST['title']
 	if 'image' in request.FILES and request.FILES['image']:
@@ -113,7 +107,9 @@ def upload_process(request):
 		blob_key=blobstore.create_gs_key('/gs/'+bucket_name+'/'+name)
 		serving_url=get_serving_url(blob_key)
 		stats=gcs.stat('/'+bucket_name+'/'+name)
-		
+	else:
+		name=""	
+		serving_url=""
 
 	if 'platform' in request.POST:
         	platform = request.POST.getlist('platform')
@@ -145,9 +141,19 @@ def upload_process(request):
 			data1,data2 = F.api_call_post(endpoint,params)
 
 	if 'linkedin' in platform:
+
+		#'link' field true by default
+		is_a_link = True	
+
 		k = LinkedinCredentials.objects.get(django_id=user)
 		page_id = k.page_id
 		page_access_token = k.access_token
+	
+		if len(request.POST['link'])<2:
+			link=name
+
+			is_a_link = False
+
 		#call API
 		if 'image' in request.FILES and request.FILES['image']:
 			L = Linkedin(user)
@@ -171,6 +177,31 @@ def upload_process(request):
 					},
 				}
 			data1,data2,data3=L.api_call_post(endpoint,params,data,headers)
+
+		elif is_a_link == True:
+			
+			L = Linkedin(user)
+			
+			endpoint = '/' + 'companies/'+page_id+'/shares'
+			
+
+			headers={"content-type":"application/json",
+				"x-li-format":"json"}
+
+			params={"oauth2_access_token":page_access_token}
+
+			data={
+				"visibility":{"code":"anyone"},
+				"comment":text,
+				"content":{
+					"submitted-url":link,
+					"title":title,
+					"description":text,
+					"submitted-image-url":serving_url,
+					},
+				}
+			data1,data2,data3=L.api_call_post(endpoint,params,data,headers)
+
 
 		else:
 			L = Linkedin(user)
@@ -219,4 +250,4 @@ def upload_process(request):
 				
 
 
-	return render_to_response('dashboard.html',{'data1':data1,'data2':data2,'data3':data3,'data4':link})
+	return render_to_response('dashboard.html',{'data1':data1,'data2':data2,'data3':data,'data4':link})

@@ -19,6 +19,15 @@ LINKEDIN_SECRET_KEY = 'ouxH5GvjYUmPowTt'
 GOOGLE_PLUS_CLIENT_ID ='208026266169-o8ke89laho7m89sknet6epbrktb7389e.apps.googleusercontent.com'
 GOOGLE_PLUS_CLIENT_SECRET='aYIRXcbxLFxQfllrwEWnJOQ3'
 
+PINTEREST_API_KEY = '1437364'
+PINTEREST_CLIENT_SECRET = 'a6b3c1d5'
+pinterest_api = 'http://api.pinterest.com/v3'
+
+pin_access_token='MTQzMTU5NDo1MjA1MTc4MDY4NDA2MzI2MzE6NjU1MzV8MTQwNDUxNDQ0MToyNTkyMDAwLS04NjBjMzllNThjN2ZiYTZiZWUxZWU1YzI4ODE1Zjk1MA%3D%3D'
+#expires_at=1407106441
+#token_type=bearer
+
+
 #BASE_URL = 'http://localhost:8080'
 BASE_URL = 'https://myproject0922.appspot.com'
 

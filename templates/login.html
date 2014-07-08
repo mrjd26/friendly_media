@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html>
 
+<img id='star' src='/static/twitter.png' />
 <head>
  <link type='text/css' rel='stylesheet' href='/static/login.css'/>  
-
+ <script src='/static/js/movement.js'></script>
 
 
 <!-- G+ Verification -->
 
-<a href="https://plus.google.com/109655484217805791883" rel="publisher">Google+</a>
+<a style='visibility:hidden' href="https://plus.google.com/109655484217805791883" rel="publisher">Google+</a>
 
 <!-- end Verification -->
 
@@ -19,6 +20,7 @@
 
 </head>
 
+
  <body>
   <div id='main_container'>
    <h3>Account Login</h3>
@@ -26,7 +28,7 @@
     {{form.as_p}}
     <input type='submit' value='Submit'/>
    </form>
-   <span id='register'><a href='/accounts/create/'>Register</a></span>
+   <span id='register'><a href='/accounts/create/'>Register</a></span><br>
    <span id='forgot'><a href='/forgot/'>Forgot Password?</a></span>
    <br>
    <span id='message'>{{message}}</span>

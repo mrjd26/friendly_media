@@ -1,19 +1,16 @@
 
 $(document).ready(function(){
 
+//global is_checked variable
 
 $(function(){
    var twitter = document.getElementById("twitter_checkbox");
    var char_count = document.getElementById("char_count");
 
-   if (twitter.checked) {
-	
-//         char_count.style.visibility="visible";
-//   } else {
+// see if twitter is enabled on page load
 
-//         char_count.style.visibility="hidden";
-//   }
-//}); //end state check function
+   if (twitter.checked) {
+
 var count=0;
 var output ='0';
 $("#id_text").keyup(function(){
@@ -25,12 +22,13 @@ $("#id_text").keyup(function(){
    } else {
       count = text_count;
    }
+      count = 140 - count;
       output = count.toString();
 
-   if (count > 140) {
-	document.getElementById("id_text").style.color="red";
+   if (count < 0) {
+	document.getElementById('id_text').style.color="red";
    } else {
-        document.getElementById("id_text").style.color="black";
+        document.getElementById('id_text').style.color="black";
    }
 
    $("#id_text").tooltip({    items: 'textarea',
@@ -47,9 +45,10 @@ $("#id_link").keyup(function(){
   } else {
      count = text_count;
   }
+     count = 140 - count;
      output = count.toString();
 
-  if (count > 140) {
+  if (count < 0) {
 	document.getElementById('id_link').style.color="red";
   } else {
 	document.getElementById('id_link').style.color="black";
@@ -68,6 +67,7 @@ $('#id_link').mouseover(function(){
 $('#id_text').mouseover(function(){
   $(this).tooltip({items:'textarea',content:output}).tooltip("open");
 });
+
 
 } //end if statement
 

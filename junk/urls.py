@@ -16,7 +16,7 @@ urlpatterns = patterns('',
     url(r'^accounts/twitter_callback/$','views_tw.twitter_callback'),
     url('^accounts/login/$','views_login.login_screen'),
     url('^accounts/create/$','views_login.create'),
-    url('^thanks/$','views_login.thanks'),
+    url('^confirmed/$','views_login.confirmed'),
     url('^accounts/logout/$','views_login.logout_view'),
     url(r'^in_connect/$','views_in.in_connect'),
     url(r'^accounts/in_callback/$','views_in.in_callback'),
@@ -25,4 +25,8 @@ urlpatterns = patterns('',
 
     url(r'^upload/$','views_upload.upload'),
     url(r'^upload_process/$','views_upload.upload_process'),	
+
+    #custom tab for FB Biz page
+    url(r'^fb_custom_tab/$','views_fb_custom_tab.custom_tab'),
+
 )
