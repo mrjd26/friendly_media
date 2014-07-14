@@ -1,8 +1,8 @@
 from django.shortcuts import render,render_to_response
 from forms import uploadform
-from credentials.models import upload,FacebookCredentials,LinkedinCredentials,TwitterCredentials
+from credentials.models import upload,FacebookCredentials,LinkedinCredentials,TwitterCredentials,GooglePlusCredentials
 from django.http import HttpResponseRedirect
-from calls import Facebook,Linkedin,Twitter
+from calls import Facebook,Linkedin,Twitter,Google
 from django.contrib.auth.decorators import login_required
 #google cloud services imports
 from google.appengine.api import app_identity
@@ -190,16 +190,12 @@ def upload_process(request):
 
 			params={"oauth2_access_token":page_access_token}
 
+	
 			data={
-				"visibility":{"code":"anyone"},
-				"comment":text,
-				"content":{
-					"submitted-url":link,
-					"title":title,
-					"description":text,
-					"submitted-image-url":serving_url,
-					},
+				"comment":link,
+				"visibility":{"code":"anyone"},		
 				}
+
 			data1,data2,data3=L.api_call_post(endpoint,params,data,headers)
 
 
@@ -218,36 +214,41 @@ def upload_process(request):
 
 			data1,data2,data3=L.api_call_post(endpoint,params,data,headers)
 
-		if 'twitter' in platform:
-			o = TwitterCredentials.objects.get(django_id=user)
-			oauth_token = o.oauth_token
-			oauth_token_secret = o.oauth_token_secret
-			TWITTER_API_KEY = o.TWITTER_API_KEY
-			TWITTER_API_SECRET=o.TWITTER_API_SECRET
+	if 'twitter' in platform:
+		o = TwitterCredentials.objects.get(django_id=user)
+		oauth_token = o.oauth_token
+		oauth_token_secret = o.oauth_token_secret
+		TWITTER_API_KEY = o.TWITTER_API_KEY
+		TWITTER_API_SECRET=o.TWITTER_API_SECRET
 			
 
-
-			if 'image' in request.FILES and request.FILES['image']:
+		if 'image' in request.FILES and request.FILES['image']:
 				
-				file_object = request.FILES['image']
-				file_object.open()
-				img=file_object.read()
+			file_object = request.FILES['image']
+			file_object.open()
+			img=file_object.read()
 				
-				#Had to go with Twython to get statuses/update_with_media working
+			#Had to go with Twython to get statuses/update_with_media working
 	
-				twitter=Twython(TWITTER_API_KEY,TWITTER_API_SECRET,oauth_token,oauth_token_secret)
+			twitter=Twython(TWITTER_API_KEY,TWITTER_API_SECRET,oauth_token,oauth_token_secret)
 							
-				twitter.update_status_with_media(media=StringIO(img),status=(text+' '+link))
+			twitter.update_status_with_media(media=StringIO(img),status=(text+' '+link))
 	
-								
-
-
-			else:
-				T = Twitter(user,TWITTER_API_KEY,TWITTER_API_SECRET,oauth_token,oauth_token_secret)
-				endpoint = '/statuses/update.json'
-				params = {'status':(text+' '+link)}
-				T.api_call_post(endpoint,params)
+		else:
+			T = Twitter(user,TWITTER_API_KEY,TWITTER_API_SECRET,oauth_token,oauth_token_secret)
+			endpoint = '/statuses/update.json'
+			params = {'status':(text+' '+link)}
+			T.api_call_post(endpoint,params)
 				
 
+	if 'gplus' in platform:
+			
+		k = GooglePlusCredentials.objects.get(django_id=user)
+		endpoint='/people/me/moments/vault'
+		access_token = k.access_token		
 
-	return render_to_response('dashboard.html',{'data1':data1,'data2':data2,'data3':data,'data4':link})
+		G=Google(user)
+
+		a,b,c,d=G.api_call_post(endpoint,access_token)
+	
+	return render_to_response('dashboard.html',{'data1':a,'data2':b,'data3':c,'data4':d})

@@ -3,6 +3,9 @@
 <html>
 <head>
 <link style='text/css' rel='stylesheet' href='/static/dashboard.css'/>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="/static/js/dash_ajax.js"></script>
+
 </head>
 
 <body>
@@ -38,6 +41,13 @@
 
   <div class='divider'></div>
 
+  <div id='instagram_container' class='light'>
+    <form class='inline' action="/instagram_connect/" method="POST">{% csrf_token %}
+     <input type="image" id="instagram" src="/static/instagram.png"/>
+    </form><img class='inline' src="{{instagram_png_source}}"/>
+  </div>
+
+  <div class='divider'></div>
  </div> <!--login pane-->
  
  <div id='dashboard_pane'>
@@ -73,7 +83,7 @@ data4:{{data4}}
    {% if post.retweeted %}
      <div id='post_container_twitter'>
       <img class='inline'src='/static/RT.png'/><span class='retweet'>RETWEETED by {{post.user.name}}</span><br>
-<img src="{{post.retweeted_status.user.profile_image_url}}"/><span class='name'><a href="https://www.twitter.com/{{post.retweeted_status.user.screen_name}}">{{ post.retweeted_status.user.name }}</a></span><span class='screen_name'>@{{post.retweeted_status.user.screen_name}}</span><br>
+<img src="{{post.retweeted_status.user.profile_image_url}}"/><span class='name'><a href="https://www.twitter.com/{{post.retweeted_status.user.screen_name}}">{{ post.retweeted_status.user.name }}</a></span><span class='screen_name'>@{{post.retweeted_status.user.screen_name}}</span>{% if post.user.following %}<div class="following" onclick="unfollow({{post.user.id}})"></div>{% else %}<img class="follow" onclick="follow({{post.user.id}})" src="/static/follow.png"/>{% endif %}<br>
 	<span class='tweetlow'>{{ post.message|urlize}}</span><br>
     {% if post.link %}
 	<img src="{{ post.link}}"/></br>
@@ -84,12 +94,13 @@ data4:{{data4}}
     {% if post.favorited %}
 	<img src='/static/favorited.png'/><span id='favorited'class='screen_name'>Favorited </span>{{post.retweeted_status.favorite_count}}
     {% endif %}
+	<span id="id">{{post.user.id}}</span>
       </div>
   <!-- Tweet -->
 
    {% else %}
 	<div id='post_container_twitter'>
-	<img class='inline'src="{{ post.profile_pic }}"/><span class='inline'><a href="https://twitter.com/{{post.user.screen_name}}">{{post.name}}</a></span><div class='inline'><span class='screen_name'>@{{post.user.screen_name}}</span><br>
+	<img class='inline'src="{{ post.profile_pic }}"/><span class='inline'><a href="https://twitter.com/{{post.user.screen_name}}">{{post.name}}</a></span><div class='inline'><span class='screen_name'>@{{post.user.screen_name}}</span>{% if post.user.following %}<div class="following" onclick="unfollow({{post.user.id}})"></div>{% else %}<img class="follow" onclick="follow({{post.user.id}})" src="/static/follow.png"/>{% endif %}<br>
 
     
 	<span class='tweethigh'>{{ post.message|urlize }}</span><br></div>
@@ -104,6 +115,7 @@ data4:{{data4}}
 	<img src='/static/favorited.png'/><span id='favorited' class='screen_name'>Favorited </span><span class='tweetlow'>{{post.favorite_count}}</span>
     {% endif %}
 	{{ post.created_time }}
+	<span id="id">{{post.user.id}}</span>
 	</div>
    {% endif %}
 

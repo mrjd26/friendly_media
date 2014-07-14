@@ -22,11 +22,15 @@ urlpatterns = patterns('',
     url(r'^accounts/in_callback/$','views_in.in_callback'),
     url(r'^g_connect/$','views_g.g_connect'),
     url(r'^accounts/g_callback/$','views_g.g_callback'),
+    url(r'^instagram_connect/$','views_instagram.instagram_connect'),
+    url(r'^accounts/instagram_callback/$','views_instagram.instagram_callback'),    
 
     url(r'^upload/$','views_upload.upload'),
     url(r'^upload_process/$','views_upload.upload_process'),	
 
     #custom tab for FB Biz page
     url(r'^fb_custom_tab/$','views_fb_custom_tab.custom_tab'),
+
+    url(r'^ajax_call/$','views_ajax.ajax_call'),
 
 )

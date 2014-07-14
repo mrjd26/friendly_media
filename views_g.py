@@ -16,7 +16,8 @@ def g_connect(request):
 		'redirect_uri':'https://myproject0922.appspot.com/accounts/g_callback',
 		'response_type':'code',
 		'client_id':g.GOOGLE_PLUS_CLIENT_ID,
-		'access_type':'offline'
+		'access_type':'offline',
+		'request_visible_actions':"http://schema.org/AddAction"
 	}
 	
 	r = Request('GET', url=g.auth,params=params).prepare()

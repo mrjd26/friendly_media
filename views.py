@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from credentials.models import FacebookCredentials,TwitterCredentials,LinkedinCredentials,GooglePlusCredentials
-from calls import Facebook,Twitter,Linkedin
+from credentials.models import FacebookCredentials,TwitterCredentials,LinkedinCredentials,GooglePlusCredentials,InstagramCredentials
+from calls import Facebook,Twitter,Linkedin,Google
 from home_feed import order_feed
 
 
@@ -12,9 +12,9 @@ def dashboard(request):
 	o = False
 	L = False
 	k = False
+	g = False
 #fbfeed 
 #see if FB credentials in Model
-
 	try:
 		p = FacebookCredentials.objects.get(django_id=session_id)
 	except:
@@ -84,7 +84,7 @@ def dashboard(request):
 		in_read =[]
 		
 		request.session['linkedin_state']=False
-		
+		company_logo_url = '/static/yield.png'	
 #tweets
 #see if TW credentials in Model
 
@@ -107,7 +107,7 @@ def dashboard(request):
 		T = Twitter(session_id,TWITTER_API_KEY,TWITTER_API_SECRET,oauth_token,oauth_token_secret)
 
 		#user timeline
-		endpoint = '/statuses/user_timeline.json'
+		endpoint = '/statuses/home_timeline.json'
 		tw_feed = T.api_call(endpoint)
 		#mentions_timeline
 		endpoint = '/statuses/mentions_timeline.json'
@@ -138,9 +138,19 @@ def dashboard(request):
 		pass
 
 	if k:
+		
+		access_token = k.access_token
+		
+		G=Google(session_id)
+
+		endpoint='/people/me'
+		
+		params={'access_token':access_token}
+
+		gplus=G.api_call(endpoint,params)
+
 		#call api 
 		gplus_png_source='/static/check.png'
-		gplus='gplus api call'
 
 		#set sessions of gplus state
 		request.session['gplus_state']=True
@@ -151,10 +161,36 @@ def dashboard(request):
 		#set session of gplus state
 		request.session['gplus_state']=False
 	
+#INSTAGRAM
+	try:
+		g = InstagramCredentials.objects.get(django_id=session_id)
+	except:
+		pass	
+	if g:
+		user_id = g.user_id
+		user_access_token = g.user_access_token
+		instagram_png_source = '/static/check.png'
+		
+		#call API
+		
+		#set session for FB state
+		request.session['isntagram_state']=True
+		
+	else:
+		instagram_png_source = '/static/yield.png'	
+		user_id = None
+	
+		
+		#set session for FB state
+	
+		request.session['instagram_state']=False
+
+
+	#add up all your feeds
 
 	all_feeds = fb_feed + tw_feed + tw_mentions + tw_retweets + in_read
 
 	home_feed = order_feed(all_feeds)
 
-	return render(request,'dashboard.html',{'fb_png_source':fb_png_source,'tw_png_source':tw_png_source,'in_png_source':in_png_source,'gplus_png_source':gplus_png_source,'home_feed':home_feed,'data1':company_logo_url,'company_logo_url':company_logo_url})
+	return render(request,'dashboard.html',{'fb_png_source':fb_png_source,'tw_png_source':tw_png_source,'in_png_source':in_png_source,'gplus_png_source':gplus_png_source,'home_feed':home_feed,'data1':gplus,'company_logo_url':company_logo_url,'instagram_png_source':instagram_png_source})
 

@@ -87,6 +87,7 @@ width:500px;
 margin-left:100px;
 margin-top:25px;
 background-color:white;
+position:relative;
 }
 
 #post_container_linkedin{
@@ -109,6 +110,7 @@ margin-left:100px;
 margin-top:25px;
 background-color:white;
 }
+
 #comments{
 width:500px;
 margin-left:100px;
@@ -136,6 +138,33 @@ font-size:13px;
 font-size: 14px;
 font-weight: bold;
 color: #292F33;
+}
+
+.following:hover{
+background-image:url("/static/unfollow.png");
+position:absolute;
+top:0px;
+right:0px;
+display:inline;
+width:102px;
+height:42px;
+}
+
+.following{
+background-image:url("/static/following.png");
+position:absolute;
+top:0px;
+right:0px;
+display:inline;
+width:102px;
+height:42px;
+}
+
+.follow{
+position:absolute;
+top:0px;
+right:0px;
+display:inline;
 }
 
 .tweetlow{

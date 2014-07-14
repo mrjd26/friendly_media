@@ -44,6 +44,11 @@
 
   <div class='divider'></div>
 
+  <div id='instagram_container' class='light'>
+    <form class='inline' action="/instagram_connect/" method="POST">{% csrf_token %}
+     <input type="image" id="instagram" src="/static/instagram.png"/>
+    </form><img class='inline' src="{{instagram_png_source}}"/>
+  </div>
  </div> <!--end login pane-->
  
  <div id='upload_pane'>
@@ -70,6 +75,7 @@
    <input type="checkbox" name="platform" value="facebook"{{fb_state}}>Facebook
    <input type="checkbox" name="platform" value="linkedin"{{in_state}}>Linkedin
    <input type="checkbox" name="platform" value="gplus"{{g_state}}>Google+
+   <input type="checkbox" name="platform" value="instagram"{{instagram_state}}>Instagram
  </br>
    <input type="submit" value="Submit"/>
    </form>

@@ -5,6 +5,7 @@ import json
 graph_url = 'https://graph.facebook.com'
 twitter_api_url = 'https://api.twitter.com/1.1'
 linkedin_url = 'https://api.linkedin.com/v1'
+gplus_url='https://www.googleapis.com/plus/v1'
 
 class Facebook:
 
@@ -90,4 +91,32 @@ class Linkedin:
 		call_endpoint = linkedin_url + endpoint
 		r = requests.get(call_endpoint,params=params)
 		company = r.json()
-		return company	
+		return company
+
+class Google:
+	def __init__(self,django_id):
+		self.django_id = django_id
+
+	def api_call(self,endpoint,params):
+	
+		endpoints=gplus_url+endpoint
+		r = requests.get(endpoints,params=params)
+		gplus = r.json()
+
+		return gplus
+
+	def api_call_post(self,endpoint,access_token):
+		call_endpoint = gplus_url + endpoint
+		params={'access_token':access_token}
+		headers={"Content-Type":"application/json"}
+		moment = {"type":"http://schema.org/AddAction",
+          "target": {
+            "id": "target-id-1",
+            "type":"http://schema.org/AddAction",
+            "name": "The Google+ Platform",
+            "description": "A page that describes just how awesome Google+ is!",
+            "image": "https://developers.google.com/+/plugins/snippet/examples/thing.png"
+          }
+         }
+		r=requests.request("POST",call_endpoint,params=params,data=json.dumps(moment),headers=headers)
+		return r.reason,r.content,r.url,r.headers

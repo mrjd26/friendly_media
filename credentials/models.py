@@ -3,22 +3,28 @@ import re
 import requests
 from django.contrib.auth.models import User
 import json
+from datetime import datetime
 
+#FACEBOOK
 FACEBOOK_APP_ID = '716225878444780'
 FACEBOOK_API_SECRET = '403766eb2f6a537027d2bd9b3898872b'
 FACEBOOK_SCOPE = 'publish_actions,manage_pages'
 
+#TWITTER
 TWITTER_API_KEY = 'gKRElHWgABW9w6ckHbnwRS1A6'
 TWITTER_API_SECRET = 'OIAWUMdn1IKTgYUfEap8u5uOpPpBgSNznOu9MAL1z4McT3i69l'
 TWITTER_ACCESS_TOKEN='1293569622-bfN44wC79YCQ8bFtsMZqYiXQ8225BeM1tDOeUPy'
 TWITTER_ACCESS_TOKEN_SECRET='uFmAZjj7UY7xHm0gAxiZYJyH7tJdmQsb40GJnT8r3jfuE'
 
+#LINKEDIN
 LINKEDIN_API_KEY = '75xy8hrtu86a2p'
 LINKEDIN_SECRET_KEY = 'ouxH5GvjYUmPowTt'
 
+#GOOGLEpLUS
 GOOGLE_PLUS_CLIENT_ID ='208026266169-o8ke89laho7m89sknet6epbrktb7389e.apps.googleusercontent.com'
 GOOGLE_PLUS_CLIENT_SECRET='aYIRXcbxLFxQfllrwEWnJOQ3'
 
+#PINTEREST
 PINTEREST_API_KEY = '1437364'
 PINTEREST_CLIENT_SECRET = 'a6b3c1d5'
 pinterest_api = 'http://api.pinterest.com/v3'
@@ -27,9 +33,17 @@ pin_access_token='MTQzMTU5NDo1MjA1MTc4MDY4NDA2MzI2MzE6NjU1MzV8MTQwNDUxNDQ0MToyNT
 #expires_at=1407106441
 #token_type=bearer
 
+#INSTAGRAM
+INSTAGRAM_CLIENT_ID="c71db1a9ad674e199dd524ff85c335ec"
+INSTAGRAM_CLIENT_SECRET="588309b6d1764a5585f6b327fe565066"
+INSTAGRAM_REDIRECT_URI="https://myproject0922.appspot.com/accounts/instagram_callback"
+
 
 #BASE_URL = 'http://localhost:8080'
 BASE_URL = 'https://myproject0922.appspot.com'
+
+
+now = datetime.now()
 
 class FacebookCredentials(models.Model):
 	FACEBOOK_APP_ID = FACEBOOK_APP_ID
@@ -229,8 +243,11 @@ class GooglePlusCredentials(models.Model):
 	expires_in = models.CharField(max_length=255,blank=True,null=True)
 	refresh_token=models.TextField(blank=True,null=True)
 	token_type=models.CharField(max_length=255,blank=True,null=True)
+	datetime=models.DateTimeField()
 
 	def request_access_token(self,code,django_id):
+
+		headers={"Content-Type":"application/x-www-form-urlencoded"}
 
 		params = {
 			'grant_type':'authorization_code',
@@ -239,7 +256,7 @@ class GooglePlusCredentials(models.Model):
 			'client_id':self.GOOGLE_PLUS_CLIENT_ID,
 			'client_secret':self.GOOGLE_PLUS_CLIENT_SECRET
 		}
-		r = requests.post(self.get_access_token,data=params)
+		r = requests.post(self.get_access_token,data=params,headers=headers)
 		response_content=r.content
 		response_header=r.headers
 		response_reason=r.reason
@@ -252,9 +269,40 @@ class GooglePlusCredentials(models.Model):
 		self.expires_in=response['expires_in']
 		self.token_type=response['token_type']
 		self.django_id = django_id
+		self.datetime=now
+		self.save()
+		
+class InstagramCredentials(models.Model):
+	INSTAGRAM_CLIENT_ID = INSTAGRAM_CLIENT_ID
+	INSTAGRAM_CLIENT_SECRET = INSTAGRAM_CLIENT_SECRET
+	instagram_url="https://instagram.com"
+	authorize=instagram_url+"/oauth/authorize/"
+	token_url =instagram_url+"/oauth/access_token"
+	INSTAGRAM_REDIRECT_URI = INSTAGRAM_REDIRECT_URI
+
+	django_id = models.CharField(max_length=255,primary_key=True)
+	access_token = models.CharField(max_length=255,blank=True,null=True)
+	user_id = models.CharField(max_length=255,blank=True,null=True)
+	profile_pic=models.TextField(blank=True,null=True)
+	datetime=models.DateTimeField()
+
+	def get_access_token(self,code):
+		
+		params = {"client_secret":self.INSTAGRAM_CLIENT_SECRET,
+			"grant_type":"authorization_code",
+			"redirect_uri":self.INSTAGRAM_REDIRECT_URI,
+			"code":code,}
+
+		r = requests.get(self.token_url,params=params)
+		
+		response=r.json()
+
+		self.access_token=response["access_token"]
+		self.user_id = response["user.id"]
+		self.profile_pic=response["user.profile_pic"]
 		self.save()
 
-
+		return r.reason,r.content
 
 # upload form model
 
