@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 
+
 <html>
 <head>
+<meta charset="UTF-8">
 <link style='text/css' rel='stylesheet' href='/static/dashboard.css'/>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="/static/js/dash_ajax.js"></script>
@@ -92,7 +94,10 @@ data4:{{data4}}
 	<img src='/static/retweeted.png'/><span id='retweeted'class='screen_name'>Retweeted </span>{{post.retweet_count}}
     
     {% if post.favorited %}
-	<img src='/static/favorited.png'/><span id='favorited'class='screen_name'>Favorited </span>{{post.retweeted_status.favorite_count}}
+	<span id="favorited{{post.id}}" class="favorited" value="favorited" onclick="favorite('{{post.id}}')">★ Favorited</span><br>
+	Favorited : {{post.retweeted_status.favorite_count}} times
+    {% else %}
+	<span id="favorited{{post.id}}" class="favorite" value="not_favorited" onclick="favorite('{{post.id}}')">★ Favorited</div>
     {% endif %}
 	<span id="id">{{post.user.id}}</span>
       </div>
@@ -111,9 +116,14 @@ data4:{{data4}}
     {% if post.retweeted %}
 	<img src='/static/retweeted.png'/><span id='retweeted'class='screen_name'>Retweeted </span><span class='tweetlow'>{{post.retweet_count}}</span>
     {% endif %}
-    {% if post.favorite_count != 0 %}
-	<img src='/static/favorited.png'/><span id='favorited' class='screen_name'>Favorited </span><span class='tweetlow'>{{post.favorite_count}}</span>
+
+    {% if post.favorited %}
+	<span id="favorited{{post.id}}" class="favorited" value="favorited" onclick="favorite('{{post.id}}')">★ Favorited</span><br>
+	Favorited : {{post.retweeted_status.favorite_count}} times
+    {% else %}
+	<span id="favorited{{post.id}}" class="favorite" value="not_favorited" onclick="favorite('{{post.id}}')">★ Favorited</span>
     {% endif %}
+
 	{{ post.created_time }}
 	<span id="id">{{post.user.id}}</span>
 	</div>

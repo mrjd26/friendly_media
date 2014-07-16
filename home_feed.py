@@ -32,6 +32,7 @@ def order_feed(all_feeds):
 			post['platform']='twitter'
 				
 			post['created_time'] = parser.parse(post['created_time'])
+			post["id"]=str(post["id"])
 		#facebook profile pic from graph call in views.py
 		if 'from' in post:
 			poster_id=post['from']['id']

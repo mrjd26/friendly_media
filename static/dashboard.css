@@ -179,10 +179,19 @@ font-weight: 300;
 line-height: 34px;
 }
 
-#favorited{
-color:#FFAC33;
-font-weight:400;
+.favorited{
+cursor:pointer;
+color:#ffac33;
+text-decoration:underline;
 }
+
+.favorite{
+cursor:pointer;
+color:#9599a6;
+text-decoration:none;
+}
+
+
 #retweeted{
 color:#609928;
 font-weight:400;

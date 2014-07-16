@@ -119,7 +119,7 @@ def dashboard(request):
 		#set session of Twitter state
 		request.session['twitter_state']=True
 
-		
+
 	else:
 		tw_png_source = '/static/yield.png'
 		user_id=None
@@ -192,5 +192,5 @@ def dashboard(request):
 
 	home_feed = order_feed(all_feeds)
 
-	return render(request,'dashboard.html',{'fb_png_source':fb_png_source,'tw_png_source':tw_png_source,'in_png_source':in_png_source,'gplus_png_source':gplus_png_source,'home_feed':home_feed,'data1':gplus,'company_logo_url':company_logo_url,'instagram_png_source':instagram_png_source})
+	return render(request,'dashboard.html',{'fb_png_source':fb_png_source,'tw_png_source':tw_png_source,'in_png_source':in_png_source,'gplus_png_source':gplus_png_source,'home_feed':home_feed,'company_logo_url':company_logo_url,'instagram_png_source':instagram_png_source})
 
