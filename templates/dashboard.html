@@ -148,11 +148,15 @@ data4:{{data4}}
 	<img src="{{post.picture}}"/><br>
     {% endif %}
 
-<!-- not sure what this is 
-    {% if post.link and post.type == 'photo' %}
-	<img src="{{post.link}}"/><br>
+    {% if post.description %}
+	<p>{{post.description}}</p>
     {% endif %}
--->
+
+    {% if post.source %}
+        <iframe width="320" height="240" src="{{post.source}}">
+        </iframe>
+    {% endif %}
+
     {% if post.link and post.type == 'link' %}
 	<a href="{{post.link}}">{{post.description}}</a>
     {% endif %}

@@ -58,6 +58,13 @@ def order_feed(all_feeds):
 				post['picture']=new_link
 
 
+			if 'source' in post:
+				link=post['source']
+				ndx=link.find('p')
+				link=link[:ndx+1]+'s'+link[ndx+1:]
+				link=link.strip("&autoplay=1")
+				post["source"]=link
+
 		#linkedin-time
 		if 'timestamp' in post:
 			timestamp = post['timestamp']
